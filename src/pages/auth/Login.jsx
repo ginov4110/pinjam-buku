@@ -3,8 +3,11 @@ import React from "react";
 import CoverImage from "../../assets/images/forLogin.png";
 import { Input } from "../../components/Input";
 import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-screen bg-[#FFCF96] flex items-start overflow-hidden">
       {/* Left */}
@@ -58,10 +61,12 @@ function Login() {
 
         <div className="w-full flex flex-col">
           <Button
+            onClick={() => navigate("/")}
             className="w-full text-white btn btn-accent font-semibold rounded-md p-4 text-center flex items-center justify-center"
             label="LOGIN"
           />
           <Button
+            onClick={() => navigate("/register")}
             className="w-full text-black btn btn-ghost font-semibold rounded-md p-4  mt-3 text-center flex items-center justify-center"
             label="Sign Up"
           />
@@ -70,7 +75,9 @@ function Login() {
         <div className="w-full flex items-center justify-center">
           <p className="text-sm text-black font-normal">
             Do not have an account?
-            <span className="font-semibold text-black underline underline-offset-1 cursor-pointer">
+            <span
+              onClick={() => navigate("/register")}
+              className="font-semibold text-black underline underline-offset-1 cursor-pointer">
               Sign up for free
             </span>
           </p>

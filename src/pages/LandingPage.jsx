@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import Navbar from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
 import landingImg from "../assets/images/forLanding.png";
 import landingImg2 from "../assets/images/forLanding2.png";
 import {
