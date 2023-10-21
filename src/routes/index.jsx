@@ -1,12 +1,19 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
 import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import Books from "@/pages/Books";
 import RentBook from "@/pages/RentBook";
+import { useToken } from "@/utils/states/contexts/token-context";
 
 function Router() {
+  const { token } = useToken();
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -14,7 +21,7 @@ function Router() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: token === "" ? <Login /> : <Navigate to="/" />,
     },
     {
       path: "/register",
@@ -22,11 +29,11 @@ function Router() {
     },
     {
       path: "/books",
-      element: <Books />,
+      element: token === "" ? <Navigate to="/login" /> : <Books />,
     },
     {
       path: "/rent-books",
-      element: <RentBook />,
+      element: token === "" ? <Navigate to="/login" /> : <RentBook />,
     },
     {
       path: "*",

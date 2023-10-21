@@ -2,8 +2,11 @@ import React from "react";
 import { FaBookReader } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Button from "./Button";
+import { useToken } from "@/utils/states/contexts/token-context";
 
 function Navbar() {
+  const token = useToken();
+
   return (
     <>
       <div className="navbar bg-[#FFCF96]">
@@ -43,12 +46,25 @@ function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link to="login" className="btn btn-outline rounded-full">
-            Sign in
-          </Link>
-          <Link to="register" className="btn btn-ghost rounded-full ml-3">
-            Sign up
-          </Link>
+          {token === "" ? (
+            <>
+              <Link to="login" className="btn btn-outline rounded-full">
+                Sign in
+              </Link>
+              <Link to="register" className="btn btn-ghost rounded-full ml-3">
+                Sign up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="btn btn-ghost rounded-full ml-3"
+                label="Log out">
+                Log out
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>

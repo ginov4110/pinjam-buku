@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { Select } from "@/components/Input";
+import { Input, Select } from "@/components/Input";
 import Layout from "@/components/Layout";
 import { NavbarIn } from "@/components/Navbar";
 import { TableRent } from "@/components/Table";
@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react";
 
 function Books() {
   const [books, setBooks] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState("");
 
   useEffect(() => {
     axios
@@ -29,6 +31,18 @@ function Books() {
   //     console.log(error.toString());
   //   }
   // }
+
+  const openForm = (e) => {
+    if (isOpen) {
+      setMode("");
+      setIsOpen(false);
+    } else {
+      setMode("none");
+      setIsOpen(true);
+    }
+    console.log(isOpen);
+    console.log(mode);
+  };
 
   return (
     <>
@@ -56,7 +70,61 @@ function Books() {
             <Button
               className=" ml-5 btn btn-sm btn-accent text-white"
               label="Tambah Buku"
+              onClick={(e) => openForm(e)}
             />
+          </div>
+          {/* Open Form, trigger by button */}
+          <div className="container mt-3 text-center" style={{ display: mode }}>
+            <h2 className="font-semibold text-2xl">Form Tambah Buku</h2>
+            <form>
+              <div className="flex flex-row mt-5">
+                <div className="w-1/2 flex flex-col items-center justify-center">
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="isbn"
+                    type="text"
+                    placeholder="ISBN"
+                  />
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="bookName"
+                    type="text"
+                    placeholder="Judul Buku"
+                  />
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="pages"
+                    type="text"
+                    placeholder="Halaman"
+                  />
+                </div>
+                <div className="w-1/2 flex flex-col items-center">
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="authorName"
+                    type="text"
+                    placeholder="Nama Author"
+                  />
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="bookCategory"
+                    type="text"
+                    placeholder="Kategori Buku"
+                  />
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
+                    name="releaseDate"
+                    type="text"
+                    placeholder="Tanggal Publikasi"
+                  />
+                </div>
+              </div>
+              <Button
+                className="btn btn-success text-white w-40 my-10"
+                label="Tambah"
+                type="submit"
+              />
+            </form>
           </div>
         </div>
         <TableRent
@@ -68,7 +136,6 @@ function Books() {
             "Nama Author",
             "Kategori Buku",
             "Tanggal Publikasi",
-            "Aksi",
           ]}
           datas={books}
         />

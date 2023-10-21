@@ -1,16 +1,34 @@
 import React from "react";
 
 function Input(props) {
-  const { name, type, placeholder, className } = props;
+  const { name, type, placeholder, className, label, id, error, register } =
+    props;
   return (
-    <div className="flex items-center">
-      <input
-        className={className}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-      />
-    </div>
+    <>
+      <div className="flex items-center">
+        <label className="mr-3" htmlFor={id}>
+          {label}
+        </label>
+        <br />
+        <input
+          className={className}
+          placeholder={placeholder}
+          {...(register
+            ? register(name, {
+                valueAsNumber: type === "number" ? true : false,
+              })
+            : {})}
+          {...props}
+        />
+      </div>
+      {error && (
+        <label className="label">
+          <span className="break-words text-sm font-light text-red-500">
+            {error}
+          </span>
+        </label>
+      )}
+    </>
   );
 }
 

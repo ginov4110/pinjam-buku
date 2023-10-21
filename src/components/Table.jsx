@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FaPencilAlt, FaEraser } from "react-icons/fa";
+import { FaPencilAlt, FaEraser, FaPlusSquare } from "react-icons/fa";
 
 function Table(props) {
   const { headers = [], datas = [] } = props;
@@ -65,10 +65,19 @@ function TableRent(props) {
               <td>{data.bookCategory}</td>
               <td>{data.releaseDate}</td>
               <td>
-                <FaPencilAlt />
+                <a>
+                  <FaPlusSquare />
+                </a>
               </td>
               <td>
-                <FaEraser />
+                <a>
+                  <FaPencilAlt />
+                </a>
+              </td>
+              <td>
+                <a>
+                  <FaEraser />
+                </a>
               </td>
             </tr>
           ))}
