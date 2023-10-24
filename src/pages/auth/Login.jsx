@@ -1,39 +1,54 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import React from "react";
-import * as z from "zod";
-import { login } from "@/utils/api/auth/api";
+import Swal from "sweetalert2";
 
 import CoverImage from "../../assets/images/forLogin.png";
 import { Input } from "../../components/Input";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useToken } from "@/utils/states/contexts/token-context";
-
-const schema = z.object({
-  username: z.string().min(3, { message: "Username is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import { FaBookReader } from "react-icons/fa";
+import { userLogin, loginSchema } from "@/utils/api/auth";
 
 function Login() {
   const navigate = useNavigate();
-  const { changeToken } = useToken;
+  const { changeToken } = useToken();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginSchema),
+  });
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
   });
 
   async function handleLogin(data) {
     try {
-      const result = await login(data);
-      changeToken(JSON.stringify(result));
+      const result = await userLogin(data);
+      changeToken(JSON.stringify(result.payload));
+      Toast.fire({
+        icon: "success",
+        title: "Signed in successfully",
+      });
       navigate("/");
     } catch (error) {
-      console.log(error);
+      Toast.fire({
+        icon: "error",
+        title: error.message,
+      });
     }
   }
 
@@ -54,29 +69,38 @@ function Login() {
       {/* End Left */}
       {/* Right */}
       <div className="w-1/2 h-full bg-[#FAF8ED] flex flex-col p-14 rounded-md justify-between">
-        <h1 className="text-4xl text-black font-bold">PIKU</h1>
+        <div className="flex flex-row">
+          <FaBookReader className="w-8 h-8 items-center mr-3" />
+          <Link to="/" className="normal-case text-4xl text-black font-bold">
+            PIKU
+          </Link>
+        </div>
         <div className="w-full flex flex-col">
           <h3 className="text-2xl text-black font-semibold mb-2">Login</h3>
           <p className="text-sm mb-2 text-black">Masukkan identitas anda</p>
         </div>
 
         <div className="w-full flex flex-col">
-          <form onSubmit={handleSubmit(handleLogin)}>
+          <form aria-label="form-login" onSubmit={handleSubmit(handleLogin)}>
             <Input
-              className="w-full bg-transparent border-b py-4 my-2 border-black outline-none focus:outline-none"
-              error={errors.username?.message}
+              className="w-full bg-transparent border-b py-4 my-2 border-black outline-none focus:outline-none "
+              id="input-username"
+              type="text"
+              label="Username"
+              name="username"
               placeholder="Username"
               register={register}
-              name="username"
-              type="text"
+              error={errors.username?.message}
             />
             <Input
               className="w-full bg-transparent border-b py-4 my-2 border-black outline-none focus:outline-none "
-              error={errors.password?.message}
+              id="input-password"
+              type="password"
+              label="Password"
+              name="password"
               placeholder="Password"
               register={register}
-              name="password"
-              type="password"
+              error={errors.password?.message}
             />
             <div className="w-full flex items-center justify-between mb-3">
               <div className="w-full flex items-center">
@@ -88,19 +112,21 @@ function Login() {
                 Forgot password?
               </p>
             </div>
-
-            <div className="w-full flex flex-col">
+            <div className="w-full flex flex-col mt-2">
               <Button
                 className="w-full text-white btn btn-accent font-semibold rounded-md p-4 text-center flex items-center justify-center"
                 label="LOGIN"
-              />
-              <Button
-                onClick={() => navigate("/register")}
-                className="w-full text-black btn btn-ghost font-semibold rounded-md p-4  mt-3 text-center flex items-center justify-center"
-                label="Sign Up"
+                type="submit"
+                disabled={isSubmitting}
+                aria-disabled={isSubmitting}
               />
             </div>
           </form>
+          <Button
+            onClick={() => navigate("/register")}
+            className="w-full text-black btn btn-ghost font-semibold rounded-md p-4  mt-3 text-center flex items-center justify-center"
+            label="Sign Up"
+          />
         </div>
 
         <div className="w-full flex items-center justify-center">

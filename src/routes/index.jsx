@@ -10,9 +10,15 @@ import Register from "@/pages/auth/Register";
 import Books from "@/pages/Books";
 import RentBook from "@/pages/RentBook";
 import { useToken } from "@/utils/states/contexts/token-context";
+import { useEffect } from "react";
+import { setAxiosConfig } from "@/utils/api/axiosWithConfig";
 
 function Router() {
   const { token } = useToken();
+
+  useEffect(() => {
+    setAxiosConfig("https://651a7caa340309952f0d6022.mockapi.io/");
+  }, []);
 
   const router = createBrowserRouter([
     {

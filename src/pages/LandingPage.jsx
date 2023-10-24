@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import Button from "../components/Button";
 import React from "react";
+import Swal from "sweetalert2";
 
 function LandingPage() {
   const status = [
@@ -45,9 +46,6 @@ function LandingPage() {
     },
   ];
 
-  {
-    /* Melihat buku lebih detail, dapat meminjam > 3 buku, Kamu dapat extend peminjaman buku */
-  }
   const features = [
     "Melihat buku lebih detail",
     "Kamu dapat meminjam > 3 buku",

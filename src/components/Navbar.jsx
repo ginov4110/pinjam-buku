@@ -1,11 +1,16 @@
 import React from "react";
 import { FaBookReader } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Button from "./Button";
 import { useToken } from "@/utils/states/contexts/token-context";
+import { toast } from "react-toastify";
 
 function Navbar() {
-  const token = useToken();
+  const { token, changeToken } = useToken();
+
+  function handleLogout() {
+    changeToken();
+    toast.success("Successfully logout");
+  }
 
   return (
     <>
@@ -59,6 +64,7 @@ function Navbar() {
             <>
               <Link
                 to="/login"
+                onClick={() => handleLogout()}
                 className="btn btn-ghost rounded-full ml-3"
                 label="Log out">
                 Log out

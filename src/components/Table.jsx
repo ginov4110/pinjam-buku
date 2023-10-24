@@ -41,10 +41,16 @@ function Table(props) {
 }
 
 function TableRent(props) {
-  const { headers = [], datas = [] } = props;
+  const {
+    headers = [],
+    datas = [],
+    isReady,
+    onEditClick,
+    onDeleteClick,
+  } = props;
   return (
-    <div className="overflow-x-auto">
-      <table className="table">
+    <div className="overflow-x-auto mt-5">
+      <table className="table table-striped">
         {/* head */}
         <thead>
           <tr>
@@ -55,32 +61,33 @@ function TableRent(props) {
         </thead>
         <tbody>
           {/* row 1 */}
-          {datas.map((data) => (
-            <tr key={data.id}>
-              <td>{data.id}</td>
-              <td>{data.ISBN}</td>
-              <td>{data.bookName}</td>
-              <td>{data.pages}</td>
-              <td>{data.authorName}</td>
-              <td>{data.bookCategory}</td>
-              <td>{data.releaseDate}</td>
-              <td>
-                <a>
-                  <FaPlusSquare />
-                </a>
-              </td>
-              <td>
-                <a>
-                  <FaPencilAlt />
-                </a>
-              </td>
-              <td>
-                <a>
-                  <FaEraser />
-                </a>
-              </td>
-            </tr>
-          ))}
+          {isReady &&
+            datas.map((data) => (
+              <tr key={data.id}>
+                {Object.keys(data).map((key, index) => (
+                  <td key={index}>{data[key]}</td>
+                ))}
+                <td>
+                  <a>
+                    <FaPlusSquare />
+                  </a>
+                </td>
+                <td>
+                  <a>
+                    <FaPencilAlt
+                      onClick={onEditClick ? () => onEditClick(data) : null}
+                    />
+                  </a>
+                </td>
+                <td>
+                  <a>
+                    <FaEraser
+                      onClick={onDeleteClick ? () => onDeleteClick(data) : null}
+                    />
+                  </a>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

@@ -1,12 +1,12 @@
 import Layout from "@/components/Layout";
-import { NavbarIn } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { TableRent } from "@/components/Table";
 import React from "react";
 
 function RentBook() {
   return (
     <>
-      <NavbarIn />
+      <Navbar />
       <Layout>
         <div className="mb-8">
           <h2 className="font-semibold text-3xl mt-5">
