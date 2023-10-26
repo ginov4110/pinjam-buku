@@ -7,11 +7,9 @@ import store from "./utils/states/redux/store/store";
 import { TokenProvider } from "./utils/states/contexts/token-context";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <TokenProvider>
-        <App />
-      </TokenProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <TokenProvider>
+      <App />
+    </TokenProvider>
+  </Provider>
 );

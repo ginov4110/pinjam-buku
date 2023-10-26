@@ -32,17 +32,29 @@ function Input(props) {
 }
 
 function Select(props) {
-  const { label, placeholder, id, error, register, options = [], name } = props;
+  const {
+    label,
+    onChange,
+    value,
+    placeholder,
+    id,
+    error,
+    register,
+    options = [],
+    name,
+  } = props;
 
   return (
     <div className="flex flex-col mt-3">
       <label htmlFor={id}>{label}</label>
       <select
         className="select select-bordered w-48 max-w-xs ml-3"
+        onChange={onChange}
+        value={value}
         defaultValue=""
         {...(register ? register(name) : {})}
         {...props}>
-        <option disabled value="">
+        <option value="Semua" disabled>
           {placeholder}
         </option>
         {options.map((option) => (

@@ -12,6 +12,7 @@ import RentBook from "@/pages/RentBook";
 import { useToken } from "@/utils/states/contexts/token-context";
 import { useEffect } from "react";
 import { setAxiosConfig } from "@/utils/api/axiosWithConfig";
+import ChatAI from "@/pages/ChatAI";
 
 function Router() {
   const { token } = useToken();
@@ -40,6 +41,10 @@ function Router() {
     {
       path: "/rent-books",
       element: token === "" ? <Navigate to="/login" /> : <RentBook />,
+    },
+    {
+      path: "/openai",
+      element: token === "" ? <Navigate to="/login" /> : <ChatAI />,
     },
     {
       path: "*",

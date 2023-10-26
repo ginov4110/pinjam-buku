@@ -26,9 +26,10 @@ const Toast = Swal.mixin({
 
 function Books() {
   const [books, setBooks] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [mode, setMode] = useState("");
   const [selectedId, setSelectedId] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const {
     register,
@@ -41,11 +42,34 @@ function Books() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (selectedCategory !== "") {
+      filterCategory();
+    } else if (selectedCategory === "All") {
+      fetchData();
+    }
+  }, [filterCategory]);
+
   async function fetchData() {
     try {
       const result = await getBooks();
       console.log(result);
       setBooks(result);
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error.toString(),
+      });
+    }
+  }
+
+  async function filterCategory() {
+    const url = new URL("https://651a7caa340309952f0d6022.mockapi.io/books");
+    url.searchParams.append("bookCategory", selectedCategory);
+    try {
+      const resullt = await axios.get(url).then((response) => {
+        setBooks(response.data);
+      });
     } catch (error) {
       Toast.fire({
         icon: "error",
@@ -107,8 +131,6 @@ function Books() {
       setMode("none");
       setIsOpen(true);
     }
-    console.log(isOpen);
-    console.log(mode);
   };
 
   return (
@@ -119,9 +141,14 @@ function Books() {
           <h2 className="font-semibold text-3xl mb-10">Daftar Buku</h2>
           <div className="flex flex-row items-center">
             <Select
+              id="input-book-category"
+              aria-label="input-book-category"
               label="Cari Kategori"
+              name="bookCategory"
               placeholder="-- Pilih Kategori --"
+              value={selectedCategory}
               options={[
+                "All",
                 "Classic",
                 "Science Fiction",
                 "Mystery",
@@ -133,6 +160,7 @@ function Books() {
                 "Historical Fiction",
                 "Fiction",
               ]}
+              onChange={(e) => setSelectedCategory(e.target.value)}
             />
             <Button
               className="mt-9 ml-5 btn btn-sm btn-accent text-white"

@@ -46,7 +46,7 @@ function Navbar() {
               <Link to="/rent-books">Daftar Pinjam</Link>
             </li>
             <li>
-              <a>Open AI</a>
+              <Link to="/openai">Open AI</Link>
             </li>
           </ul>
         </div>

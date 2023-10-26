@@ -30,7 +30,7 @@ function Register() {
   }
 
   return (
-    <div className="w-full h-screen flex bg-[#FFCF96] items-start overflow-hidden">
+    <div className="w-full h-screen flex bg-[#FFCF96] items-start overflow-auto">
       <div className="relative w-1/2 h-full flex flex-col justify-center left-[5%] top-[10%]">
         <div className="absolute top-[5%] left-[5%] flex flex-col">
           <h1 className="text-4xl font-bold text-black">
