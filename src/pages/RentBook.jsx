@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { Navbar } from "@/components/Navbar";
-import { TableRent } from "@/components/Table";
+import { Table } from "@/components/Table";
 import React, { useEffect, useState } from "react";
 
 function RentBook() {
@@ -12,6 +12,15 @@ function RentBook() {
     setRentBooks(result);
   }, []);
 
+  function onDeleteClick(data) {
+    const newData = rentBooks.filter((rentBook) => rentBook.id !== data.id);
+    setRentBooks(newData);
+    Toast.fire({
+      icon: "success",
+      title: "Buku berhasil dihapus",
+    });
+  }
+
   return (
     <>
       <Navbar />
@@ -21,7 +30,7 @@ function RentBook() {
             Daftar Paminjaman Buku
           </h2>
         </div>
-        <TableRent
+        <Table
           isReady={true}
           headers={[
             "No",
@@ -31,6 +40,7 @@ function RentBook() {
             "Aksi",
           ]}
           datas={rentBooks}
+          onDeleteClick={(data) => onDeleteClick(data)}
         />
       </Layout>
     </>
