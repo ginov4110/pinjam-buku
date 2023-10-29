@@ -71,7 +71,7 @@ function TableRent(props) {
                   <td key={index}>{data[key]}</td>
                 ))}
                 <td>
-                  <Link to="/rent-books">
+                  <Link>
                     <FaPlusSquare
                       onClick={onAddClick ? () => onAddClick(data) : null}
                     />

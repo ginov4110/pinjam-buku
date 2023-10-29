@@ -26,6 +26,7 @@ const Toast = Swal.mixin({
 
 function Books() {
   const [books, setBooks] = useState([]);
+  const [rentBooks, setRentBooks] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
   const [mode, setMode] = useState("");
   const [selectedId, setSelectedId] = useState("");
@@ -41,6 +42,11 @@ function Books() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const localData = localStorage.getItem("rentBooks");
+  //   return localData ? JSON.parse(rentBooks) : [];
+  // }, [rentBooks]);
 
   useEffect(() => {
     if (selectedCategory !== "All") {
@@ -89,6 +95,22 @@ function Books() {
     reset();
   }
 
+  function onAddRent(data) {
+    const newRent = {
+      id: data.id,
+      bookName: data.bookName,
+      bookCategory: data.bookCategory,
+      rentDate: new Date(),
+    };
+    const dupeArr = [...rentBooks, newRent];
+    setRentBooks(dupeArr);
+    localStorage.setItem("rentBooks", JSON.stringify(rentBooks));
+    Toast.fire({
+      icon: "success",
+      title: "Kamu berhasil pinjam, jangan lupa kembalikan ya!",
+    });
+  }
+
   function onSubmitEdit(data) {
     const newData = books.map((book) => {
       if (book.id === selectedId) {
@@ -112,16 +134,6 @@ function Books() {
     setValue("authorName", data.authorName);
     setValue("bookCategory", data.bookCategory);
     setValue("releaseDate", data.releaseDate);
-  }
-
-  function onAddRent(data) {
-    const rentBook = {
-      id: data.id,
-      bookName: data.bookName,
-      bookCategory: data.bookCategory,
-      rentDate: new Date(),
-    };
-    localStorage.setItem("rentBooks", JSON.stringify(rentBook));
   }
 
   function onClickDelete(data) {

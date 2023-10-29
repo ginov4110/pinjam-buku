@@ -9,8 +9,7 @@ function RentBook() {
   useEffect(() => {
     const localData = localStorage.getItem("rentBooks");
     const result = JSON.parse(localData);
-    const dupeArr = [...rentBooks, result];
-    setRentBooks(dupeArr);
+    setRentBooks(result);
   }, []);
 
   return (
