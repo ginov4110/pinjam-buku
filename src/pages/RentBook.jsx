@@ -1,9 +1,18 @@
 import Layout from "@/components/Layout";
 import { Navbar } from "@/components/Navbar";
 import { TableRent } from "@/components/Table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 function RentBook() {
+  const [rentBooks, setRentBooks] = useState([]);
+
+  useEffect(() => {
+    const localData = localStorage.getItem("rentBooks");
+    const result = JSON.parse(localData);
+    const dupeArr = [...rentBooks, result];
+    setRentBooks(dupeArr);
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -14,14 +23,15 @@ function RentBook() {
           </h2>
         </div>
         <TableRent
+          isReady={true}
           headers={[
             "No",
             "Judul Buku",
             "Kategori Buku",
-            "Username",
             "Tanggal Peminjaman",
             "Aksi",
           ]}
+          datas={rentBooks}
         />
       </Layout>
     </>

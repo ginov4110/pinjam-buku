@@ -43,12 +43,12 @@ function Books() {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory !== "") {
+    if (selectedCategory !== "All") {
       filterCategory();
-    } else if (selectedCategory === "All") {
+    } else {
       fetchData();
     }
-  }, [filterCategory]);
+  }, [selectedCategory]);
 
   async function fetchData() {
     try {
@@ -112,6 +112,16 @@ function Books() {
     setValue("authorName", data.authorName);
     setValue("bookCategory", data.bookCategory);
     setValue("releaseDate", data.releaseDate);
+  }
+
+  function onAddRent(data) {
+    const rentBook = {
+      id: data.id,
+      bookName: data.bookName,
+      bookCategory: data.bookCategory,
+      rentDate: new Date(),
+    };
+    localStorage.setItem("rentBooks", JSON.stringify(rentBook));
   }
 
   function onClickDelete(data) {
@@ -266,6 +276,7 @@ function Books() {
               "Tanggal Publikasi",
             ]}
             datas={books}
+            onAddClick={(data) => onAddRent(data)}
             onEditClick={(data) => onClickEdit(data)}
             onDeleteClick={(data) => onClickDelete(data)}
           />

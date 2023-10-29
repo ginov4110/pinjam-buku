@@ -1,6 +1,7 @@
 import React from "react";
 
 import { FaPencilAlt, FaEraser, FaPlusSquare } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Table(props) {
   const { headers = [], datas = [] } = props;
@@ -45,6 +46,8 @@ function TableRent(props) {
     headers = [],
     datas = [],
     isReady,
+    onRent,
+    onAddClick,
     onEditClick,
     onDeleteClick,
   } = props;
@@ -68,9 +71,11 @@ function TableRent(props) {
                   <td key={index}>{data[key]}</td>
                 ))}
                 <td>
-                  <a>
-                    <FaPlusSquare />
-                  </a>
+                  <Link to="/rent-books">
+                    <FaPlusSquare
+                      onClick={onAddClick ? () => onAddClick(data) : null}
+                    />
+                  </Link>
                 </td>
                 <td>
                   <a>
