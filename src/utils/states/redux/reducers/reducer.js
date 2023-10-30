@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { date } from "zod";
 
 function getItems() {
   const getItem = localStorage.getItem("books");
@@ -17,7 +16,7 @@ const initialState = {
   books: [
     {
       no: "",
-      isbn: "",
+      ISBN: "",
       bookName: "",
       pages: 0,
       authorName: "",
