@@ -28,7 +28,7 @@ function Books() {
   const [books, setBooks] = useState([]);
   const [rentBooks, setRentBooks] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("none");
   const [selectedId, setSelectedId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -42,11 +42,6 @@ function Books() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const localData = localStorage.getItem("rentBooks");
-  //   return localData ? JSON.parse(rentBooks) : [];
-  // }, [rentBooks]);
 
   useEffect(() => {
     if (selectedCategory !== "All") {
@@ -85,7 +80,7 @@ function Books() {
   }
 
   function onSubmit(data) {
-    const newData = { id: uuidv4(), ...data };
+    const newData = { id: books.length + 1, ...data };
     const dupeArr = [...books, newData];
     setBooks(dupeArr);
     Toast.fire({
@@ -104,7 +99,7 @@ function Books() {
     };
     const dupeArr = [...rentBooks, newRent];
     setRentBooks(dupeArr);
-    localStorage.setItem("rentBooks", JSON.stringify(rentBooks));
+    localStorage.setItem("rentBooks", JSON.stringify(dupeArr));
     Toast.fire({
       icon: "success",
       title: "Kamu berhasil pinjam, jangan lupa kembalikan ya!",
@@ -128,7 +123,7 @@ function Books() {
 
   function onClickEdit(data) {
     setSelectedId(data.id);
-    setValue("isbn", data.isbn);
+    setValue("isbn", data.ISBN);
     setValue("bookName", data.bookName);
     setValue("pages", data.pages);
     setValue("authorName", data.authorName);
@@ -159,8 +154,15 @@ function Books() {
     <>
       <Navbar />
       <Layout>
-        <div className="mb-5">
-          <h2 className="font-semibold text-3xl mb-10">Daftar Buku</h2>
+        <div className="mb-5 p-4">
+          <h2 className="font-semibold text-3xl mb-3">Daftar Buku</h2>
+          <div className="w-2/3">
+            <h4 className="mb-4 -ml-3 font-medium">
+              Selamat Datang di Perpustakaan Online PIKU, kami memiliki banyak
+              koleksi buku dengan kategori yang bermacam-macam, silahkan baca
+              dan pinjam. Terima kasih sudah berkunjung
+            </h4>
+          </div>
           <div className="flex flex-row items-center">
             <Select
               id="input-book-category"
@@ -185,7 +187,7 @@ function Books() {
               onChange={(e) => setSelectedCategory(e.target.value)}
             />
             <Button
-              className="mt-9 ml-5 btn btn-sm btn-accent text-white"
+              className="mt-12 ml-5 btn btn-sm btn-accent text-white"
               label="Tambah Buku"
               onClick={(e) => openForm(e)}
             />
@@ -256,16 +258,17 @@ function Books() {
                     ]}
                     placeholder="-- Pilih Kategori --"
                     register={register}
-                    error={errors.productName?.message}
+                    error={errors.bookCategory?.message}
                   />
                   <Input
                     className="w-80 border rounded-md p-3 my-2 input-sm"
                     id="input-release-date"
                     label="Tanggal Publikasi"
+                    type="date"
                     name="releaseDate"
                     placeholder="yyyy-mm-dd"
                     register={register}
-                    error={errors.authorName?.message}
+                    error={errors.releaseDate?.message}
                   />
                 </div>
               </div>

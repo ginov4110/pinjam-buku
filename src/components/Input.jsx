@@ -46,7 +46,9 @@ function Select(props) {
 
   return (
     <div className="flex flex-col mt-3">
-      <label htmlFor={id}>{label}</label>
+      <label className="ml-6 font-semibold mb-3" htmlFor={id}>
+        {label}
+      </label>
       <select
         className="select select-bordered w-48 max-w-xs ml-3"
         onChange={onChange}

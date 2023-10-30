@@ -27,7 +27,7 @@ function ChatAI() {
         messages: [
           {
             role: "system",
-            content: "You are a helpful librarian.",
+            content: "You are a helpful librarian and you want to help user.",
           },
         ],
         model: "gpt-3.5-turbo",
@@ -70,7 +70,12 @@ function ChatAI() {
     <>
       <Navbar />
       <Layout>
-        <h3 className="text-3xl font-semibold ml-3 mb-5">Chat dengan AI</h3>
+        <h3 className="text-3xl font-semibold ml-3 mb-2">Chat dengan AI</h3>
+        <h4 className="mb-3 font-medium w-2/3">
+          Chat dengan AI untuk membantumu mencari buku yang cocok denganmu atau
+          bisa juga untuk memberi rekomendasi buku bacaan yang populer dengan
+          rating yang tinggi dan sebagainya
+        </h4>
         <div className="bg-slate-100 rounded-lg p-3 h-full overflow-auto flex flex-col">
           {results.map((result) => (
             <p
@@ -90,7 +95,7 @@ function ChatAI() {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <Button
-            className="grid-cols-3 btn btn-success"
+            className="grid-cols-3 btn btn-success text-white"
             label={isLoading ? "Proses" : "Kirim"}
             disabled={isLoading}
             aria-disabled={isLoading}

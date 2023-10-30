@@ -2,9 +2,11 @@ import React from "react";
 
 import { FaPencilAlt, FaEraser, FaPlusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Table(props) {
   const { headers = [], datas = [], isReady, onDeleteClick } = props;
+
   return (
     <div className="overflow-x-auto mt-5">
       <table className="table table-striped">
@@ -25,11 +27,11 @@ function Table(props) {
                   <td key={index}>{data[key]}</td>
                 ))}
                 <td>
-                  <a>
+                  <Link>
                     <FaEraser
                       onClick={onDeleteClick ? () => onDeleteClick(data) : null}
                     />
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -76,18 +78,18 @@ function TableRent(props) {
                   </Link>
                 </td>
                 <td>
-                  <a>
+                  <Link>
                     <FaPencilAlt
                       onClick={onEditClick ? () => onEditClick(data) : null}
                     />
-                  </a>
+                  </Link>
                 </td>
                 <td>
-                  <a>
+                  <Link>
                     <FaEraser
                       onClick={onDeleteClick ? () => onDeleteClick(data) : null}
                     />
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

@@ -13,9 +13,9 @@ import {
   FaLinkedin,
   FaLink,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import React from "react";
-import Swal from "sweetalert2";
 
 function LandingPage() {
   const status = [
@@ -66,10 +66,11 @@ function LandingPage() {
             <div className="font-normal text-base pb-12">
               <p>Baca buku yang kamu cari dan temukan inspirasi</p>
             </div>
-            <Button
-              className="btn py-4 px-16 bg-[#F9B572] rounded-md"
-              label="Coba sekarang"
-            />
+            <Link
+              to="/books"
+              className="btn py-4 px-16 bg-[#F9B572] rounded-md">
+              Coba Sekarang
+            </Link>
           </div>
           <div className="flex flex-row justify-center ml-12">
             <img src={landingImg} alt="landingPageImage" />

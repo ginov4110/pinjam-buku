@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import React from "react";
-import Swal from "sweetalert2";
 
 import CoverImage from "../../assets/images/forLogin.png";
 import { Input } from "../../components/Input";
@@ -10,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToken } from "@/utils/states/contexts/token-context";
 import { FaBookReader } from "react-icons/fa";
 import { userLogin, loginSchema } from "@/utils/api/auth";
+import { Toast } from "@/utils/toasts/toastNotif";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,18 +21,6 @@ function Login() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
-  });
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
   });
 
   async function handleLogin(data) {

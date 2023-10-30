@@ -7,7 +7,9 @@ import { userRegister, registerSchema } from "@/utils/api/auth";
 import CoverImage from "../../assets/images/forLogin.png";
 import { Input } from "../../components/Input";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaBookReader } from "react-icons/fa";
+import { Toast } from "@/utils/toasts/toastNotif";
 
 function Register() {
   const navigate = useNavigate();
@@ -23,15 +25,21 @@ function Register() {
       const result = await userRegister(data);
       toast.success(result.message);
       navigate("/login");
+      Toast.fire({
+        icon: "success",
+        title: "Register complete",
+      });
     } catch (error) {
-      toast.error(error.message);
-      alert(error);
+      Toast.fire({
+        icon: "error",
+        title: error,
+      });
     }
   }
 
   return (
-    <div className="w-full h-screen flex bg-[#FFCF96] items-start overflow-auto">
-      <div className="relative w-1/2 h-full flex flex-col justify-center left-[5%] top-[10%]">
+    <div className="w-full h-full flex bg-[#FFCF96] items-start overflow-auto">
+      <div className="relative w-1/2 h-screen flex flex-col justify-center left-[5%] top-[10%]">
         <div className="absolute top-[5%] left-[5%] flex flex-col">
           <h1 className="text-4xl font-bold text-black">
             Selamat Datang di PIKU!
@@ -42,13 +50,16 @@ function Register() {
         </div>
         <img src={CoverImage} className="w-4/6 h-auto object-cover" alt="" />
       </div>
-      <div className="w-1/2 h-full bg-[#FAF8ED] flex flex-col p-14 rounded-md justify-between">
-        <h1 className="text-4xl text-black font-bold">PIKU</h1>
+      <div className="w-1/2 h-screen bg-[#FAF8ED] flex flex-col p-10 rounded-md justify-between">
+        <div className="flex flex-row">
+          <FaBookReader className="w-8 h-8 items-center mr-3" />
+          <Link to="/" className="text-4xl text-black font-bold">
+            PIKU
+          </Link>
+        </div>
         <div className="w-full flex flex-col">
           <h3 className="text-2xl font-semibold mb-2 text-black">Register</h3>
-          <p className="text-sm mb-2 text-black">
-            Masukkan identitas baru anda
-          </p>
+          <p className="text-sm text-black">Masukkan identitas baru anda</p>
         </div>
 
         <form onSubmit={handleSubmit(handleRegister)}>
