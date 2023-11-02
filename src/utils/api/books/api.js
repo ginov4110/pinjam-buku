@@ -12,7 +12,6 @@ export const getBooks = async () => {
 export const postBook = async (data) => {
   try {
     const newData = {
-      id: data.length + 1,
       ...data,
     };
     const response = await axiosWithConfig.post("/books", newData);

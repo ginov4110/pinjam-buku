@@ -1,8 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { bookSchema, getBooks, postBook } from "@/utils/api/books";
+import {
+  bookSchema,
+  getBooks,
+  postBook,
+  deleteBook,
+  updateBook,
+} from "@/utils/api/books";
+import { FaPencilAlt, FaEraser, FaPlusSquare } from "react-icons/fa";
+import Table from "@/components/table/tables";
 
 import Button from "@/components/Button";
 import { Input, Select } from "@/components/Input";
@@ -10,7 +18,6 @@ import Layout from "@/components/Layout";
 import { Navbar } from "@/components/Navbar";
 import { TableRent } from "@/components/Table";
 import Swal from "sweetalert2";
-import { deleteBook, updateBook } from "@/utils/api/books/api";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -29,7 +36,8 @@ function Books() {
   const [rentBooks, setRentBooks] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
   const [mode, setMode] = useState("none");
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [isLoading, setIsLoading] = useState(false);
+  const [date, setDate] = useState(new Date().toString().slice(0, 10));
   const [selectedId, setSelectedId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -40,6 +48,84 @@ function Books() {
     reset,
     formState: { errors },
   } = useForm({ resolver: zodResolver(bookSchema) });
+
+  const columns = useMemo(() => [
+    {
+      header: "No",
+      accessorKey: "id",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "ISBN",
+      accessorKey: "ISBN",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "Judul Buku",
+      accessorKey: "bookName",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "Halaman",
+      accessorKey: "pages",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "Nama Author",
+      accessorKey: "authorName",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "Kategori Buku",
+      accessorKey: "bookCategory",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "Tanggal Publikasi",
+      accessorKey: "releaseDate",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "",
+      accessorKey: "actionAddRent",
+      cell: (info) => (
+        <FaPlusSquare
+          aria-label="action-edit"
+          onClick={() => onAddRent(info.row.original)}
+        />
+      ),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "",
+      accessorKey: "actionEdit",
+      cell: (info) => (
+        <FaPencilAlt
+          aria-label="action-edit"
+          onClick={() => onClickEdit(info.row.original)}
+        />
+      ),
+      footer: (props) => props.column.id,
+    },
+    {
+      header: "",
+      accessorKey: "actionDelete",
+      cell: (info) => (
+        <FaEraser
+          aria-label="action-delete"
+          onClick={() => onClickDelete(info.row.original.id)}
+        />
+      ),
+      footer: (props) => props.column.id,
+    },
+  ]);
 
   useEffect(() => {
     fetchData();
@@ -223,17 +309,6 @@ function Books() {
                 <div className="w-1/2 flex flex-col items-center justify-center">
                   <Input
                     className="w-80 border rounded-md p-3 my-2 input-sm"
-                    id="input-id"
-                    label="id"
-                    name="id"
-                    value={selectedId}
-                    defaultValue={books.length + 1}
-                    disabled
-                    register={register}
-                    error={errors.id?.message}
-                  />
-                  <Input
-                    className="w-80 border rounded-md p-3 my-2 input-sm"
                     id="input-isbn"
                     label="ISBN"
                     name="ISBN"
@@ -309,24 +384,14 @@ function Books() {
                 label="Tambah"
                 type="submit"
               />
+              <Button
+                label="Reset"
+                className="btn btn-neutral ml-3 text-white w-40 my-10"
+                onClick={() => reset()}
+              />
             </form>
           </div>
-          <TableRent
-            isReady={true}
-            headers={[
-              "No",
-              "ISBN",
-              "Judul Buku",
-              "Halaman",
-              "Nama Author",
-              "Kategori Buku",
-              "Tanggal Publikasi",
-            ]}
-            datas={books}
-            onAddClick={(data) => onAddRent(data)}
-            onEditClick={(data) => onClickEdit(data)}
-            onDeleteClick={(data) => onClickDelete(data)}
-          />
+          <Table datas={books} columns={columns} isLoading={isLoading} />
         </div>
       </Layout>
     </>
