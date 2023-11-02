@@ -2,7 +2,7 @@ export default function TablePagination(props) {
   const { table } = props;
 
   return (
-    <div className="join">
+    <div className="join mt-3">
       <button
         className="join-item btn"
         onClick={() => table.setPageIndex(0)}

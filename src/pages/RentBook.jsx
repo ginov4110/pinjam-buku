@@ -49,7 +49,7 @@ function RentBook() {
           </h4>
         </div>
         <Table
-          isReady={true}
+          isReady={rentBooks != [] ? true : false}
           headers={[
             "No",
             "Judul Buku",

@@ -37,7 +37,7 @@ function Books() {
   const [isOpen, setIsOpen] = useState(true);
   const [mode, setMode] = useState("none");
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState(new Date().toString().slice(0, 10));
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [selectedId, setSelectedId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -229,6 +229,11 @@ function Books() {
     setValue("releaseDate", data.releaseDate);
   }
 
+  function resetSelected() {
+    setSelectedId("");
+    reset();
+  }
+
   async function onClickDelete(bookId) {
     try {
       await deleteBook(bookId);
@@ -386,8 +391,8 @@ function Books() {
               />
               <Button
                 label="Reset"
-                className="btn btn-neutral ml-3 text-white w-40 my-10"
-                onClick={() => reset()}
+                className="btn bg-[#f0f0f0] ml-3 text-black w-40 my-10"
+                onClick={resetSelected}
               />
             </form>
           </div>
