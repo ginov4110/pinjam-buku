@@ -2,7 +2,7 @@
 
 Link web Piku deployed:
 
-- [piku website](https://piku-web-app.vercel.app/)
+- [piku website](https://my-piku.vercel.app/)
 
 Cara akses login dan register dengan menggunakan username dan password sebagai berikut:
 
