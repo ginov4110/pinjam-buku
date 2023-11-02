@@ -8,3 +8,36 @@ export const getBooks = async () => {
     throw Error("Failed to get Books");
   }
 };
+
+export const postBook = async (data) => {
+  try {
+    const newData = {
+      id: data.length + 1,
+      ...data,
+    };
+    const response = await axiosWithConfig.post("/books", newData);
+    return response.data;
+  } catch (error) {}
+};
+
+export const updateBook = async (data) => {
+  const { id } = data;
+  try {
+    const newData = {
+      ...data,
+    };
+    const response = await axiosWithConfig.put(`/books/${id}`, newData);
+    return response.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const deleteBook = async (bookId) => {
+  try {
+    const response = await axiosWithConfig.delete(`/books/${bookId}`);
+    return response.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};

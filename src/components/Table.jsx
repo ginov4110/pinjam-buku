@@ -2,7 +2,6 @@ import React from "react";
 
 import { FaPencilAlt, FaEraser, FaPlusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 
 function Table(props) {
   const { headers = [], datas = [], isReady, onDeleteClick } = props;
@@ -46,7 +45,6 @@ function TableRent(props) {
     headers = [],
     datas = [],
     isReady,
-    onRentPage,
     onAddClick,
     onEditClick,
     onDeleteClick,
@@ -87,7 +85,9 @@ function TableRent(props) {
                 <td>
                   <Link>
                     <FaEraser
-                      onClick={onDeleteClick ? () => onDeleteClick(data) : null}
+                      onClick={
+                        onDeleteClick ? () => onDeleteClick(data.id) : null
+                      }
                     />
                   </Link>
                 </td>

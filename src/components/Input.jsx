@@ -1,8 +1,17 @@
 import React from "react";
 
 function Input(props) {
-  const { name, type, placeholder, className, label, id, error, register } =
-    props;
+  const {
+    name,
+    type,
+    placeholder,
+    className,
+    label,
+    id,
+    error,
+    register,
+    max,
+  } = props;
   return (
     <>
       <div className="flex flex-col mt-3">
@@ -12,9 +21,10 @@ function Input(props) {
         <input
           className={className}
           placeholder={placeholder}
+          max={max}
           {...(register
             ? register(name, {
-                valueAsNumber: type === "number" ? true : false,
+                valueAsDate: type === "date" ? true : false,
               })
             : {})}
           {...props}

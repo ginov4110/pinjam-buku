@@ -1,4 +1,4 @@
 import { bookSchema } from "./types";
-import { getBooks } from "./api";
+import { getBooks, postBook, updateBook, deleteBook } from "./api";
 
-export { bookSchema, getBooks };
+export { bookSchema, getBooks, postBook, updateBook, deleteBook };

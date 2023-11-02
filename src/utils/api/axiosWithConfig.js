@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let baseUrl = "https://651a7caa340309952f0d6022.mockapi.io/";
+let baseUrl = "";
 const axiosWithConfig = axios.create();
 
 export const setAxiosConfig = (backendUrl) => {

@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { bookSchema, getBooks } from "@/utils/api/books";
-import { v4 as uuidv4 } from "uuid";
+import { bookSchema, getBooks, postBook } from "@/utils/api/books";
 
 import Button from "@/components/Button";
 import { Input, Select } from "@/components/Input";
@@ -11,6 +10,7 @@ import Layout from "@/components/Layout";
 import { Navbar } from "@/components/Navbar";
 import { TableRent } from "@/components/Table";
 import Swal from "sweetalert2";
+import { deleteBook, updateBook } from "@/utils/api/books/api";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -29,6 +29,7 @@ function Books() {
   const [rentBooks, setRentBooks] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
   const [mode, setMode] = useState("none");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [selectedId, setSelectedId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -36,6 +37,7 @@ function Books() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({ resolver: zodResolver(bookSchema) });
 
@@ -54,7 +56,6 @@ function Books() {
   async function fetchData() {
     try {
       const result = await getBooks();
-      console.log(result);
       setBooks(result);
     } catch (error) {
       Toast.fire({
@@ -79,15 +80,24 @@ function Books() {
     }
   }
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     const newData = { id: books.length + 1, ...data };
     const dupeArr = [...books, newData];
-    setBooks(dupeArr);
-    Toast.fire({
-      icon: "success",
-      title: "Buku berhasil ditambahkan",
-    });
-    reset();
+    try {
+      await postBook(data);
+      console.log(data);
+      reset();
+      fetchData();
+      Toast.fire({
+        icon: "success",
+        title: "Buku berhasil ditambahkan",
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error,
+      });
+    }
   }
 
   function onAddRent(data) {
@@ -106,24 +116,26 @@ function Books() {
     });
   }
 
-  function onSubmitEdit(data) {
-    const newData = books.map((book) => {
-      if (book.id === selectedId) {
-        return { id: selectedId, ...data };
-      }
-      return book;
-    });
-    setBooks(newData);
-    Toast.fire({
-      icon: "success",
-      title: "Buku berhasil diupdate",
-    });
-    reset();
+  async function onSubmitEdit(data) {
+    try {
+      await updateBook({ ...data, id: selectedId });
+      Toast.fire({
+        icon: "success",
+        title: "Buku berhasil diupdate",
+      });
+      reset();
+      fetchData();
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error,
+      });
+    }
   }
 
   function onClickEdit(data) {
     setSelectedId(data.id);
-    setValue("isbn", data.ISBN);
+    setValue("ISBN", data.ISBN);
     setValue("bookName", data.bookName);
     setValue("pages", data.pages);
     setValue("authorName", data.authorName);
@@ -131,13 +143,20 @@ function Books() {
     setValue("releaseDate", data.releaseDate);
   }
 
-  function onClickDelete(data) {
-    const newData = books.filter((book) => book.id !== data.id);
-    setBooks(newData);
-    Toast.fire({
-      icon: "success",
-      title: "Buku berhasil dihapus",
-    });
+  async function onClickDelete(bookId) {
+    try {
+      await deleteBook(bookId);
+      Toast.fire({
+        icon: "success",
+        title: "Buku berhasil dihapus",
+      });
+      fetchData();
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: error,
+      });
+    }
   }
 
   const openForm = (e) => {
@@ -198,14 +217,26 @@ function Books() {
             <form
               onSubmit={handleSubmit(
                 selectedId == "" ? onSubmit : onSubmitEdit
-              )}>
+              )}
+              aria-label="book-form">
               <div className="flex flex-row mt-5">
                 <div className="w-1/2 flex flex-col items-center justify-center">
                   <Input
                     className="w-80 border rounded-md p-3 my-2 input-sm"
+                    id="input-id"
+                    label="id"
+                    name="id"
+                    value={selectedId}
+                    defaultValue={books.length + 1}
+                    disabled
+                    register={register}
+                    error={errors.id?.message}
+                  />
+                  <Input
+                    className="w-80 border rounded-md p-3 my-2 input-sm"
                     id="input-isbn"
                     label="ISBN"
-                    name="isbn"
+                    name="ISBN"
                     placeholder="ISBN"
                     register={register}
                     error={errors.isbn?.message}
@@ -266,7 +297,8 @@ function Books() {
                     label="Tanggal Publikasi"
                     type="date"
                     name="releaseDate"
-                    placeholder="yyyy-mm-dd"
+                    max={date}
+                    placeholder="mm-dd-yyyy"
                     register={register}
                     error={errors.releaseDate?.message}
                   />
